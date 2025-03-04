@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 "use client";
 
 import { useState } from "react";
@@ -49,7 +51,7 @@ export default function UploadPage() {
             } else {
                 setMessage("Ошибка: " + data.error);
             }
-        } catch (error) {
+        } catch {
             setMessage("Ошибка загрузки");
         }
 

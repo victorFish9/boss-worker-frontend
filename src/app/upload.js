@@ -1,37 +1,40 @@
+"use client";
+
 import { useState } from "react";
 import axios from "axios";
+import config from "../../config";
 
-export default async function UploadPage() {
+export default function UploadPage() {
     const [file, setFile] = useState(null);
     const [uploading, setUploading] = useState(false);
     const [message, setMessage] = useState("");
 
     const handleFileChange = (event) => {
         setFile(event.target.files[0]);
-    }
+    };
 
     const uploadFile = async () => {
         if (!file) {
             setMessage("Choose a file");
             return;
         }
-    }
 
-    setUploading(true);
-    const formData = new FormData();
-    formData.append("file", file);
+        setUploading(true);
+        const formData = new FormData();
+        formData.append("file", file);
 
-    try {
-        const res = await axios.post("http://127.0.0.1:8000/api/upload/", formData, {
-            headers: { "Content-Type": "multipart/form-data" },
-        });
+        try {
+            const res = await axios.post(`${config.API_BASE_URL}`, formData, {
+                headers: { "Content-Type": "multipart/form-data" },
+            });
 
-        setMessage(res.data.message || "File is uploaded!");
-    } catch (error) {
-        setMessage("Error");
-    } finally {
-        setUploading(false);
-    }
+            setMessage(res.data.message || "File is uploaded!");
+        } catch (error) {
+            setMessage(`Error: ${error.message}`);
+        } finally {
+            setUploading(false);
+        }
+    };
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">

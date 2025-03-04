@@ -1,3 +1,5 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+
 "use client";
 
 import { useState } from "react";
@@ -29,7 +31,7 @@ export default function LoginPage() {
         if (response.ok) {
             console.log("Успешный вход:", data);
             localStorage.setItem("access_token", data.access); // Сохранение токена
-            window.location.href = "/storage"; // Перенаправление после входа
+            router.push("/storage"); // Перенаправление после входа
         } else {
             console.error("Ошибка входа:", data);
             setError("Ошибка входа: " + (data.detail || "Попробуйте снова"));
