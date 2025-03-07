@@ -164,6 +164,7 @@
 import { useState } from "react";
 import JSZip from "jszip"; // Нужно установить: npm install jszip
 import config from "../../config";
+import LoadingOverlay from "./Loading";
 
 export default function UploadPage() {
     const [files, setFiles] = useState([]);
@@ -240,6 +241,7 @@ export default function UploadPage() {
 
     return (
         <div>
+            {uploading && <LoadingOverlay />}
             <h1>Загрузка файлов</h1>
             <input type="file" multiple onChange={handleFileChange} />
             <input
