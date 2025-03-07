@@ -40,31 +40,45 @@ export default function LoginPage() {
 
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-            <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-                <h2 className="text-2xl font-semibold text-center mb-4">Вход</h2>
-                {error && <p className="text-red-500">{error}</p>}
-                <input
-                    type="text"
-                    placeholder="Имя пользователя"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    className="w-full p-2 border rounded mb-2"
-                />
-                <input
-                    type="password"
-                    placeholder="Пароль"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="w-full p-2 border rounded mb-2"
-                />
-                <button
-                    onClick={handleLogin}
-                    className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
-                >
-                    Войти
-                </button>
+        // <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+        //     <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+        //         <h2 className="text-2xl font-semibold text-center mb-4">Вход</h2>
+        //         {error && <p className="text-red-500">{error}</p>}
+        //         <input
+        //             type="text"
+        //             placeholder="Имя пользователя"
+        //             value={username}
+        //             onChange={(e) => setUsername(e.target.value)}
+        //             className="w-full p-2 border rounded mb-2"
+        //         />
+        //         <input
+        //             type="password"
+        //             placeholder="Пароль"
+        //             value={password}
+        //             onChange={(e) => setPassword(e.target.value)}
+        //             className="w-full p-2 border rounded mb-2"
+        //         />
+        //         <button
+        //             onClick={handleLogin}
+        //             className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
+        //         >
+        //             Войти
+        //         </button>
+        //     </div>
+
+
+
+        // </div>
+        <div className="container">
+            <div className="form">
+                <div className="title">Welcome,<br /><span>sign up to continue</span></div>
+                <input className="input" name="email" placeholder="Username" type="email" value={username} onChange={(e) => setUsername(e.target.value)} />
+                <input className="input" name="password" placeholder="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+
+
+                <button className="button-confirm" onClick={handleLogin}>Let`s go →</button>
             </div>
         </div>
+
     );
 }

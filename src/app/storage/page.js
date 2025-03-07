@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import UploadFile from "../components/UploadFile";
 import config from "../../config";
 
+
 export default function StoragePage() {
     const [files, setFiles] = useState([]);
     const [error, setError] = useState("");
@@ -13,7 +14,7 @@ export default function StoragePage() {
             const token = localStorage.getItem("access_token");
 
             if (!token) {
-                setError("Вы не авторизованы");
+                setError("You have to log in");
                 return;
             }
 
@@ -27,7 +28,7 @@ export default function StoragePage() {
                 });
 
                 if (!response.ok) {
-                    throw new Error("Ошибка при получении данных");
+                    throw new Error("Error to get a data");
                 }
 
                 const data = await response.json();
@@ -51,15 +52,15 @@ export default function StoragePage() {
 
             <UploadFile />
             {error && <p style={{ color: "red" }}>{error}</p>}
-            <h1>Список файлов</h1>
+            <h1>List of Files</h1>
             <ul>
                 {files.map((file) => (
                     <li key={file.filename}>
-                        {file.filename} - <a href={file.download_url}>Скачать</a>
+                        {file.filename} - <a href={file.download_url}>Download</a>
                     </li>
                 ))}
             </ul>
-            <button onClick={handleLogout}>Выйти</button>
+            <button onClick={handleLogout}>Log out</button>
         </div>
     );
 }
