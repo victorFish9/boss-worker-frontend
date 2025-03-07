@@ -77,6 +77,7 @@ export default function LoginPage() {
 
 
                 <button className="button-confirm" onClick={handleLogin}>Let`s go →</button>
+                {error && <p className="error-message">{error}</p>}
             </div>
         </div>
 
