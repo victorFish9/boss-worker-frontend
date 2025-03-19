@@ -34,7 +34,7 @@ export default function StoragePage() {
                             <a href={`${config.API_BASE_URL}/download/boss-worker-bucket/${file.name}`}>Download</a>
                         </div>
                         <div>
-                            <strong>Tags:</strong>
+                            <strong>Description:</strong>
                             {file.tags.length > 0 ? (
                                 <ul>
                                     {file.tags.map((tag, tagIndex) => (
