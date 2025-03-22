@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from "react";
 import config from "../../config";
+import { parseCookies } from "nookies";
+
 
 export default function StoragePage() {
     const [files, setFiles] = useState([]); // Состояние для хранения списка файлов
@@ -9,7 +11,8 @@ export default function StoragePage() {
 
     // Получение списка файлов
     useEffect(() => {
-        const token = localStorage.getItem('accessToken')
+        const cookies = parseCookies()
+        const token = cookies.accessToken
         if (!token) {
             setError("Token is missing")
             return
@@ -67,3 +70,4 @@ export default function StoragePage() {
         </div>
     );
 }
+

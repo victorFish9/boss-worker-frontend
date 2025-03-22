@@ -5,6 +5,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import config from "../../config";
+import { setCookie } from "nookies";
 
 export default function LoginPage() {
     const [username, setUsername] = useState("");
@@ -30,7 +31,10 @@ export default function LoginPage() {
 
         if (response.ok) {
             console.log("Успешный вход:", data);
-            localStorage.setItem("accessToken", data.token); // Сохранение токена
+            setCookie(null, "accessToken", data.token, {
+                maxAge: 60 * 60 * 24,
+                path: "/",
+            })
             router.push("/storage"); // Перенаправление после входа
         } else {
             console.error("Ошибка входа:", data);
