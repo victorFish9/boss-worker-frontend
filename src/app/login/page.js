@@ -15,7 +15,7 @@ export default function LoginPage() {
     const handleLogin = async (event) => {
         event.preventDefault();
 
-        const response = await fetch(`${config.API_BASE_URL}/api/auth/login/`, {
+        const response = await fetch(`${config.API_BASE_URL}/login/`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -30,7 +30,7 @@ export default function LoginPage() {
 
         if (response.ok) {
             console.log("Успешный вход:", data);
-            localStorage.setItem("access_token", data.access); // Сохранение токена
+            localStorage.setItem("accessToken", data.token); // Сохранение токена
             router.push("/storage"); // Перенаправление после входа
         } else {
             console.error("Ошибка входа:", data);

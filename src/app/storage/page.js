@@ -9,9 +9,23 @@ export default function StoragePage() {
 
     // Получение списка файлов
     useEffect(() => {
+        const token = localStorage.getItem('accessToken')
+        if (!token) {
+            setError("Token is missing")
+            return
+        }
+
+        console.log("Token from localStorage: ", token)
+
         const fetchFiles = async () => {
+
             try {
-                const response = await fetch(`${config.API_BASE_URL}/list/boss-worker-bucket`);
+                const response = await fetch(`${config.API_BASE_URL}/list/boss-worker-bucket`, {
+                    headers: {
+                        Authorization: token,
+                    }
+                });
+
                 const data = await response.json();
                 setFiles(data.files);
             } catch (err) {
