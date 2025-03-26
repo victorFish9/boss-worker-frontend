@@ -16,7 +16,7 @@ export default function LoginPage() {
     const handleLogin = async (event) => {
         event.preventDefault();
 
-        const response = await fetch(`${config.API_BASE_URL}/login/`, {
+        const response = await fetch(`${config.API_BASE_URL}/auth/login/`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

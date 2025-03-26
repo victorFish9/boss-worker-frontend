@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import config from "../../config";
 import { parseCookies } from "nookies";
+import FileHistory from "../components/FileHistory";
 
 
 export default function StoragePage() {
@@ -23,7 +24,7 @@ export default function StoragePage() {
         const fetchFiles = async () => {
 
             try {
-                const response = await fetch(`${config.API_BASE_URL}/list/boss-worker-bucket`, {
+                const response = await fetch(`${config.API_BASE_URL}/files/list/boss-worker-bucket`, {
                     headers: {
                         Authorization: token,
                     }
@@ -40,34 +41,47 @@ export default function StoragePage() {
     }, []);
 
     return (
-        <div>
+        <div className="container">
             {error && <p style={{ color: "red" }}>{error}</p>}
-            <h1>List of Files</h1>
+            <h1>Files available for download</h1>
             <ul>
-                {files.map((file, index) => (
-                    <li key={index}>
-                        <div>
-                            <strong>{file.name}</strong> -{" "}
-                            <a href={`${config.API_BASE_URL}/download/boss-worker-bucket/${file.name}`}>Download</a>
-                        </div>
-                        <div>
-                            <strong>Description:</strong>
-                            {file.tags.length > 0 ? (
-                                <ul>
-                                    {file.tags.map((tag, tagIndex) => (
-                                        <li key={tagIndex}>
-                                            {tag.Key}: {tag.Value}
-                                        </li>
-                                    ))}
-                                </ul>
-                            ) : (
-                                <span> No tags</span>
-                            )}
-                        </div>
-                    </li>
-                ))}
+                {files.map((file, index) => {
+                    let parsedTags = [];
+
+                    try {
+                        parsedTags = JSON.parse(file.tags); // Парсим строку в массив объектов
+                    } catch (e) {
+                        console.error("Ошибка парсинга tags:", e);
+                    }
+
+                    return (
+                        <li key={index}>
+                            <div>
+                                <strong>{file.name}</strong> -{" "}
+                                <a href={`${config.API_BASE_URL}/files/download/${file.bucket}/${file.name}`}>Download</a>
+                            </div>
+                            <div>
+                                <strong>Description:</strong>
+                                {parsedTags.length > 0 ? (
+                                    <ul>
+                                        {parsedTags.map((tag, tagIndex) => (
+                                            <li key={tagIndex}>
+                                                {tag.Key}: {tag.Value}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                ) : (
+                                    <span> No tags</span>
+                                )}
+                            </div>
+                        </li>
+                    );
+                })}
             </ul>
+
+            <FileHistory />
         </div>
     );
+
 }
 
