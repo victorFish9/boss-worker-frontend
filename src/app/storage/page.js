@@ -41,44 +41,51 @@ export default function StoragePage() {
     }, []);
 
     return (
-        <div className="container">
-            {error && <p style={{ color: "red" }}>{error}</p>}
-            <h1>Files available for download</h1>
-            <ul>
+        <div className="p-4 mt-6 border rounded-lg shadow bg-gray-50">
+            {error && <p className="text-red-500">{error}</p>}
+            <h1 className="text-lg font-semibold mb-3">Files available for download</h1>
+            <ul className="space-y-4">
                 {files.map((file, index) => {
                     let parsedTags = [];
 
                     try {
-                        parsedTags = JSON.parse(file.tags); // Парсим строку в массив объектов
+                        parsedTags = JSON.parse(file.tags);
                     } catch (e) {
                         console.error("Ошибка парсинга tags:", e);
                     }
 
                     return (
-                        <li key={index}>
-                            <div>
-                                <strong>{file.name}</strong> -{" "}
-                                <a href={`${config.API_BASE_URL}/files/download/${file.bucket}/${file.name}`}>Download</a>
-                            </div>
-                            <div>
-                                <strong>Description:</strong>
-                                {parsedTags.length > 0 ? (
-                                    <ul>
-                                        {parsedTags.map((tag, tagIndex) => (
-                                            <li key={tagIndex}>
-                                                {tag.Key}: {tag.Value}
-                                            </li>
-                                        ))}
-                                    </ul>
-                                ) : (
-                                    <span> No tags</span>
-                                )}
+                        <li key={index} className="p-4 border rounded-lg shadow bg-white">
+                            <div className="card">
+                                <h3 className="card__title font-medium">{file.name}</h3>
+                                <div className="card__content text-sm text-gray-500">
+                                    <strong>Description:</strong>
+                                    {parsedTags.length > 0 ? (
+                                        <ul className="list-disc pl-5">
+                                            {parsedTags.map((tag, tagIndex) => (
+                                                <li key={tagIndex}>
+                                                    <span className="font-semibold">{tag.Key}:</span> {" "}
+                                                    {tag.Value}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    ) : (
+                                        <span>No tags</span>
+                                    )}
+                                </div>
+                                <div className="card__footer flex justify-between items-center mt-2">
+                                    <a
+                                        href={`${config.API_BASE_URL}/files/download/${file.bucket}/${file.name}`}
+                                        className="text-blue-500 hover:underline"
+                                    >
+                                        Download
+                                    </a>
+                                </div>
                             </div>
                         </li>
                     );
                 })}
             </ul>
-
             <FileHistory />
         </div>
     );
