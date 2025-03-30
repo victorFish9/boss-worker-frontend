@@ -75,7 +75,7 @@ export default function LoginPage() {
         // </div>
         <div className="container">
             <div className="form">
-                <div className="title">Welcome,<br /><span>sign up to continue</span></div>
+                <div className="title">Welcome,<br /><span>sign in to continue</span></div>
                 <input className="input" name="email" placeholder="Username" type="email" value={username} onChange={(e) => setUsername(e.target.value)} />
                 <input className="input" name="password" placeholder="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
 
