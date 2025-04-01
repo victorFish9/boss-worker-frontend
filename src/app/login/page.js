@@ -4,8 +4,9 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import config from "../../config";
 import { setCookie } from "nookies";
+import Image from "next/image";
+import config from "../../config";
 
 
 export default function LoginPage() {
@@ -17,9 +18,10 @@ export default function LoginPage() {
     const router = useRouter();
 
     const images = [
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQMopW-mYcbgg5N759gGD96shk3KtYC39jwKg&s",
-        "https://images.prismic.io/doge/c8f63200-9fd6-4fbb-ae72-4ddc8418375c_maltipu-15.jpg?auto=compress,format&rect=0,0,1080,1080&w=456&h=456",
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmi5RtC9Oa_qgjFP3ROldlwj4c9ohoEZTmUg&s"
+        "/images/maltipoo.png",
+        "/images/maltipoo2.jpeg",
+        "/images/maltipoo3.jpg",
+
     ]
 
     useEffect(() => {
@@ -29,7 +31,7 @@ export default function LoginPage() {
             }, 2000);
             return () => clearInterval(interval)
         }
-    }, [loading])
+    }, [loading, images.length])
 
     const handleLogin = async (event) => {
         event.preventDefault()
@@ -57,12 +59,12 @@ export default function LoginPage() {
                 })
                 router.push("/storage");
             } else {
-                throw new Error(data.detail || "Try again")
+                setError("Ошибка входа: " + (data.detail || "Попробуйте снова"));
             }
         } catch (err) {
-
-            setError("Ошибка входа: " + (data.detail || "Попробуйте снова"));
-        } finally {
+            setError("Ошибка входа: попробуйте снова");
+        }
+        finally {
             setLoading(false)
         }
     };
@@ -72,7 +74,7 @@ export default function LoginPage() {
         <div className="container">
             {loading ? (
                 <div className="slideshow">
-                    <img src={images[currentSlide]} alt="Loading..." className="slide" />
+                    <Image src={images[currentSlide]} alt="Loading..." className="slide" width={200} height={150} priority />
                     <p>Пожалуйста, подождите...(ради мальтипу)</p>
                 </div>
             ) : (
