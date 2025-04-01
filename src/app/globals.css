@@ -149,6 +149,34 @@ body {
   cursor: pointer;
 }
 
+/*Login loading*/
+.slideshow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.slide {
+  width: 200px;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  animation: fade 1s ease-in-out;
+}
+
+@keyframes fade {
+  from {
+    opacity: 0.5;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+
 /*Storage card*/
 
 .card_storage {
