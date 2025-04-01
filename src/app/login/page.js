@@ -61,7 +61,7 @@ export default function LoginPage() {
             } else {
                 setError("Ошибка входа: " + (data.detail || "Попробуйте снова"));
             }
-        } catch (err) {
+        } catch {
             setError("Ошибка входа: попробуйте снова");
         }
         finally {
