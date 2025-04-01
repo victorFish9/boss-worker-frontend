@@ -96,12 +96,12 @@ export default function FileHistory() {
         <div className="p-4 mt-6 border rounded-lg shadow bg-gray-50">
             {error && <p className="text-red-500">{error}</p>}
             <div className="flex justify-between items-center mb-3">
-                <h2 className="text-lg font-semibold">Task History</h2>
+                <h1 className="text-lg font-semibold">Task History</h1>
                 <div className="text-sm text-gray-500">
                     Completed: {files.filter(f => f.completed).length}/{files.length}
                 </div>
             </div>
-            <ul className="text">
+            <ul className="card_history_ul">
                 {files.map((file) => (
                     <li key={file.id} className={`p-2 border rounded ${file.completed ? 'bg-gray-100' : ''}`}>
                         <div className="card">
