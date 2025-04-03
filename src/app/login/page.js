@@ -57,7 +57,7 @@ export default function LoginPage() {
                     maxAge: 60 * 60 * 24,
                     path: "/",
                 })
-                router.push("/storage");
+                router.push("/");
             } else {
                 setError("Ошибка входа: " + (data.detail || "Попробуйте снова"));
             }
