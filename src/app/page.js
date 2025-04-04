@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import config from "../config";
 import { parseCookies } from "nookies";
 
-
 export default function StoragePage() {
     const [files, setFiles] = useState([]);
     const [error, setError] = useState("");
