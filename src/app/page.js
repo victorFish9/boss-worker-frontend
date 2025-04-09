@@ -17,7 +17,7 @@ export default function StoragePage() {
             return
         }
 
-        console.log("Token from localStorage: ", token)
+
 
         const fetchFiles = async () => {
 
