@@ -38,6 +38,13 @@ export default function StoragePage() {
         fetchFiles();
     }, []);
 
+    function formatBytes(bytes) {
+        if (!bytes) return 'Unknown'
+        const size = ['Bytes', 'KB', 'MB', 'GB', 'TB']
+        const i = Math.floor(Math.log(bytes) / Math.log(1024))
+        return (bytes / Math.pow(1024, i)).toFixed(2) + ' ' + size[i]
+    }
+
     return (
         <div className="p-4 mt-6 border rounded-lg shadow bg-gray-50">
             {error && <p className="text-red-500">{error}</p>}
@@ -46,7 +53,9 @@ export default function StoragePage() {
             <div className="card_storage">
                 {files.length > 0 ? (
                     <ul className="card_storage_ul">
+
                         {files.map((file, index) => (
+
                             <li key={index} className="card_storage_li list-item">
                                 <div className="download_div">
                                     <a
@@ -62,7 +71,12 @@ export default function StoragePage() {
                                 <div className="card__content text-sm text-gray-500">
                                     <strong>Type:</strong> {file.type}
                                 </div>
+                                <div>
+                                    Uploaded Date: {new Date(file.createdAt).toLocaleDateString()}
+                                </div>
+                                <div> Size: {formatBytes(file.size)}</div>
                             </li>
+
                         ))}
                     </ul>
                 ) : (
