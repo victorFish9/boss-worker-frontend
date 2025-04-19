@@ -29,7 +29,10 @@ export default function PageHistory() {
                 }
 
                 const data = await response.json()
-                setFiles(data.files)
+                const sortedFiles = data.files.sort(
+                    (a, b) => new Date(b.created_at) - new Date(a.created_at)
+                );
+                setFiles(sortedFiles)
             } catch (err) {
                 setError(err.message)
             }
@@ -111,35 +114,6 @@ export default function PageHistory() {
                                         <h3 className={`card__title ${file.completed ? 'line-through' : ''}`}>
                                             {file.name}
                                         </h3>
-                                        <div className="card__content">
-                                            <strong>Description:</strong>
-                                            {file.tags.length > 0 ? (
-                                                <ul className="list-disc pl-5">
-                                                    {file.tags.map((tag, index) => {
-                                                        const urlRegex = /(https?:\/\/[^\s]+)/g;
-                                                        const value = typeof tag.Value === "string" ? tag.Value : "";
-                                                        const parts = value.split(urlRegex);
-
-                                                        return (
-                                                            <li key={index}>
-                                                                {tag.Key}:{" "}
-                                                                {parts.map((part, i) =>
-                                                                    urlRegex.test(part) ? (
-                                                                        <a key={i} href={part} target="_blank" rel="noopener noreferrer">
-                                                                            {part}
-                                                                        </a>
-                                                                    ) : (
-                                                                        part
-                                                                    )
-                                                                )}
-                                                            </li>
-                                                        );
-                                                    })}
-                                                </ul>
-                                            ) : (
-                                                <span>No tags</span>
-                                            )}
-                                        </div>
                                     </div>
                                 </div>
                                 <div className="flex items-center space-x-2">
@@ -160,17 +134,15 @@ export default function PageHistory() {
                                             <svg viewBox="0 0 64 64" height="2em" width="2em">
                                                 <path
                                                     d="M 0 16 V 56 A 8 8 90 0 0 8 64 H 56 A 8 8 90 0 0 64 56 V 8 A 8 8 90 0 0 56 0 H 8 A 8 8 90 0 0 0 8 V 16 L 32 48 L 64 16 V 8 A 8 8 90 0 0 56 0 H 8 A 8 8 90 0 0 0 8 V 56 A 8 8 90 0 0 8 64 H 56 A 8 8 90 0 0 64 56 V 16"
-                                                    pathLength="575.0541381835938"
                                                     className="path"
                                                 ></path>
                                             </svg>
                                         </label>
                                     </div>
-
                                 </div>
                             </div>
                             <div className="card__date">
-                                {new Date(file.last_modified).toLocaleString()}
+                                {new Date(file.created_at).toLocaleString()}
                             </div>
                         </div>
                     </li>
@@ -178,6 +150,4 @@ export default function PageHistory() {
             </ul>
         </div>
     );
-
-
 }
