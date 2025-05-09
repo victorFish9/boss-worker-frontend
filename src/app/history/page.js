@@ -1,45 +1,57 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import config from "../../config";
+import { useState, useEffect, useRef } from "react";
 import { parseCookies } from "nookies";
+
+
+import ProgressBarChart from "../components/ProgresBarChart";
+import config from "../../config";
 
 export default function PageHistory() {
     const [files, setFiles] = useState([])
     const [error, setError] = useState("")
     const [updatingIds, setUpdatingIds] = useState(new Set())
+    const intervalRef = useRef(null)
 
-    useEffect(() => {
-        const fetchFiles = async () => {
-            const cookies = parseCookies()
-            const token = cookies.accessToken
 
-            if (!token) {
-                setError("Token is missing")
-                return
-            }
+    const fetchFiles = async () => {
+        const cookies = parseCookies()
+        const token = cookies.accessToken
 
-            try {
-                const response = await fetch(`${config.API_BASE_URL}/files/history`, {
-                    headers: { Authorization: token },
-                })
-
-                if (!response.ok) {
-                    throw new Error("Failed to fetch file history:(")
-                }
-
-                const data = await response.json()
-                const sortedFiles = data.files.sort(
-                    (a, b) => new Date(b.created_at) - new Date(a.created_at)
-                );
-                setFiles(sortedFiles)
-            } catch (err) {
-                setError(err.message)
-            }
+        if (!token) {
+            setError("Token is missing")
+            return
         }
 
+        try {
+            const response = await fetch(`${config.API_BASE_URL}/files/history`, {
+                headers: { Authorization: token },
+            })
+
+            if (!response.ok) {
+                throw new Error("Failed to fetch file history:(")
+            }
+
+            const data = await response.json()
+            const sortedFiles = data.files.sort(
+                (a, b) => new Date(b.created_at) - new Date(a.created_at)
+            );
+            setFiles(sortedFiles)
+        } catch (err) {
+            setError(err.message)
+        }
+    }
+
+    useEffect(() => {
         fetchFiles()
+
+        intervalRef.current = setInterval(fetchFiles, 1000)
+
+        return () => {
+            clearInterval(intervalRef.current)
+        }
     }, [])
+
 
     const handleStatusChange = async (fileId, completed) => {
         const token = parseCookies().accessToken;
@@ -104,6 +116,8 @@ export default function PageHistory() {
                     Completed: {files.filter(f => f.completed).length}/{files.length}
                 </div>
             </div>
+            <ProgressBarChart files={files} />
+
             <ul className="card_history_ul">
                 {files.map((file) => (
                     <li key={file.id} className={`p-2 border rounded ${file.completed ? 'bg-gray-100' : ''}`}>
@@ -148,6 +162,7 @@ export default function PageHistory() {
                     </li>
                 ))}
             </ul>
+
         </div>
     );
 }

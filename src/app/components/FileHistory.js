@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import config from "../../config";
 import { parseCookies } from "nookies";
-
 export default function FileHistory() {
     const [files, setFiles] = useState([])
     const [error, setError] = useState("")
@@ -176,6 +175,7 @@ export default function FileHistory() {
                     </li>
                 ))}
             </ul>
+
         </div>
     );
 
