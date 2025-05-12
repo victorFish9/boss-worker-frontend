@@ -52,17 +52,17 @@ export default function LoginPage() {
             const data = await response.json();
 
             if (response.ok) {
-                console.log("Успешный вход:", data);
+                console.log("Login was successful");
                 setCookie(null, "accessToken", data.token, {
                     maxAge: 60 * 60 * 24,
                     path: "/",
                 })
                 router.push("/");
             } else {
-                setError("Ошибка входа: " + (data.detail || "Попробуйте снова"));
+                setError("Error to login: " + (data.detail || "Попробуйте снова"));
             }
         } catch {
-            setError("Ошибка входа: попробуйте снова");
+            setError("Error to login: Server is not responding");
         }
         finally {
             setLoading(false)
@@ -75,7 +75,7 @@ export default function LoginPage() {
             {loading ? (
                 <div className="slideshow">
                     <Image src={images[currentSlide]} alt="Loading..." className="slide" width={200} height={150} priority />
-                    <p>Пожалуйста, подождите...(ради мальтипу)</p>
+                    <p>Please wait a bit...(for maltipoo)</p>
                 </div>
             ) : (
 

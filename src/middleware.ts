@@ -3,11 +3,15 @@ import type { NextRequest } from "next/server"
 
 export function middleware(req: NextRequest) {
     const token = req.cookies.get("accessToken")?.value;
+    const { pathname } = req.nextUrl;
 
-    const isProtectedRoute = req.nextUrl.pathname.startsWith("/")
+    const isProtectedRoute = pathname === "/" ||
+        pathname.startsWith("/history")
 
     if (isProtectedRoute && !token) {
-        return NextResponse.redirect(new URL("/login", req.url))
+        const loginUrl = new URL("/login", req.url);
+        loginUrl.searchParams.set("from", req.nextUrl.pathname);
+        return NextResponse.redirect(loginUrl);
     }
 
     return NextResponse.next()

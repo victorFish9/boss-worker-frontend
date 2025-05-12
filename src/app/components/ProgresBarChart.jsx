@@ -22,7 +22,7 @@ export default function ProgressLineChart({ files }) {
     });
 
     return (
-        <div style={{ width: '100%', height: 400 }}>
+        <div style={{ width: 400, height: 400 }}>
             <ResponsiveContainer>
                 <LineChart data={chartData}>
                     <CartesianGrid strokeDasharray="3 3" />
@@ -32,7 +32,6 @@ export default function ProgressLineChart({ files }) {
                     <Legend />
                     <Line type="monotone" dataKey="completed" stroke="#8884d8" />
                     <Line type="monotone" dataKey="pending" stroke="#82ca9d" />
-                    <Line type="monotone" dataKey="unknown" stroke="#d88484" />
                 </LineChart>
             </ResponsiveContainer>
         </div>

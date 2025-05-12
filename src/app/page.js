@@ -7,13 +7,16 @@ import { parseCookies } from "nookies";
 export default function StoragePage() {
     const [files, setFiles] = useState([]);
     const [error, setError] = useState("");
+    const [isLoading, setIsLoading] = useState(true)
 
 
     useEffect(() => {
         const cookies = parseCookies()
         const token = cookies.accessToken
+
         if (!token) {
             setError("Token is missing")
+            setIsLoading(false)
             return
         }
 
@@ -22,6 +25,7 @@ export default function StoragePage() {
         const fetchFiles = async () => {
 
             try {
+                setIsLoading(true)
                 const response = await fetch(`${config.API_BASE_URL}/files/google/list`, {
                     headers: {
                         Authorization: token,
@@ -32,6 +36,8 @@ export default function StoragePage() {
                 setFiles(data);
             } catch (err) {
                 setError(err.message);
+            } finally {
+                setIsLoading(false)
             }
         };
 
@@ -50,39 +56,43 @@ export default function StoragePage() {
             {error && <p className="text-red-500">{error}</p>}
             <h1 className="text-lg font-semibold mb-3">Files available for download</h1>
 
-            <div className="card_storage">
-                {files.length > 0 ? (
-                    <ul className="card_storage_ul">
 
-                        {files.map((file, index) => (
-
-                            <li key={index} className="card_storage_li list-item">
-                                <div className="download_div">
-                                    <a
-                                        href={config.API_BASE_URL + file.apiDownloadLink}
-                                        className="download-link"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                    >
-                                        Download
-                                    </a>
-                                    <h3 className="card__title font-medium">{file.name}</h3>
-                                </div>
-                                <div className="card__content text-sm text-gray-500">
-                                    <strong>Type:</strong> {file.type}
-                                </div>
-                                <div>
-                                    Uploaded Date: {new Date(file.createdAt).toLocaleDateString()}
-                                </div>
-                                <div> Size: {formatBytes(file.size)}</div>
-                            </li>
-
-                        ))}
-                    </ul>
-                ) : (
-                    <p>No files available.</p>
-                )}
-            </div>
+            {isLoading ? (
+                <div className="loader-box">
+                    <div className="loader-spinner"></div>
+                </div>
+            ) : (
+                <div className="card_storage">
+                    {files.length > 0 ? (
+                        <ul className="card_storage_ul">
+                            {files.map((file, index) => (
+                                <li key={index} className="card_storage_li list-item">
+                                    <div className="download_div">
+                                        <a
+                                            href={config.API_BASE_URL + file.apiDownloadLink}
+                                            className="download-link"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            Download
+                                        </a>
+                                        <h3 className="card__title font-medium">{file.name}</h3>
+                                    </div>
+                                    <div className="card__content text-sm text-gray-500">
+                                        <strong>Type:</strong> {file.type}
+                                    </div>
+                                    <div>
+                                        Uploaded Date: {new Date(file.createdAt).toLocaleDateString()}
+                                    </div>
+                                    <div>Size: {formatBytes(file.size)}</div>
+                                </li>
+                            ))}
+                        </ul>
+                    ) : (
+                        <p>No files available.</p>
+                    )}
+                </div>
+            )}
         </div>
     );
 

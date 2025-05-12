@@ -182,6 +182,31 @@ body {
   }
 }
 
+/* Files loading */
+
+.loader-box {
+  display: flex;
+  justify-content: space-around;
+}
+
+.loader-spinner {
+  display: inline-block;
+  width: 3rem;
+  height: 3rem;
+  border: 0.25rem solid rgba(59, 130, 246, 0.2);
+  /* голубой с прозрачностью */
+  border-radius: 50%;
+  border-top-color: #3b82f6;
+  /* голубой */
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 
 /*Storage card*/
 
