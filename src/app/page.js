@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import config from "../config";
 import { parseCookies } from "nookies";
 
+import Loader from "./components/Loader"
+
 export default function StoragePage() {
     const [files, setFiles] = useState([]);
     const [error, setError] = useState("");
@@ -59,7 +61,8 @@ export default function StoragePage() {
 
             {isLoading ? (
                 <div className="loader-box">
-                    <div className="loader-spinner"></div>
+                    {/* <div className="loader-spinner"></div> */}
+                    <Loader size="large" />
                 </div>
             ) : (
                 <div className="card_storage">

@@ -6,12 +6,15 @@ import { parseCookies } from "nookies";
 
 import ProgressBarChart from "../components/ProgresBarChart";
 import config from "../../config";
+import Loader from "../components/Loader"
 
 export default function PageHistory() {
     const [files, setFiles] = useState([])
     const [error, setError] = useState("")
     const [updatingIds, setUpdatingIds] = useState(new Set())
     const intervalRef = useRef(null)
+    const [isLoading, setIsLoading] = useState(true)
+
 
 
     const fetchFiles = async () => {
@@ -39,6 +42,8 @@ export default function PageHistory() {
             setFiles(sortedFiles)
         } catch (err) {
             setError(err.message)
+        } finally {
+            setIsLoading(false)
         }
     }
 
@@ -118,51 +123,63 @@ export default function PageHistory() {
             </div>
             <ProgressBarChart files={files} />
 
-            <ul className="card_history_ul">
-                {files.map((file) => (
-                    <li key={file.id} className={`p-2 border rounded ${file.completed ? 'bg-gray-100' : ''}`}>
-                        <div className="card">
-                            <div className="flex justify-between items-start">
-                                <div className="flex items-start space-x-3">
-                                    <div>
-                                        <h3 className={`card__title ${file.completed ? 'line-through' : ''}`}>
-                                            {file.name}
-                                        </h3>
+            {/* Добавляем Loader при загрузке данных */}
+            {isLoading ? (
+                <div className="flex justify-center items-center py-8">
+                    <Loader size="lg" />
+                </div>
+            ) : (
+                <ul className="card_history_ul">
+                    {files.map((file) => (
+                        <li key={file.id} className={`p-2 border rounded ${file.completed ? 'bg-gray-100' : ''}`}>
+                            <div className="card">
+                                <div className="flex justify-between items-start">
+                                    <div className="flex items-start space-x-3">
+                                        <div>
+                                            <h3 className={`card__title ${file.completed ? 'line-through' : ''}`}>
+                                                {file.name}
+                                            </h3>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-center space-x-2">
+                                        <span className={`text-xs px-2 py-1 rounded ${file.completed
+                                            ? 'bg-green-100 text-green-800'
+                                            : 'bg-yellow-100 text-yellow-800'
+                                            }`}>
+                                            {updatingIds.has(file.id) ? (
+                                                // Добавляем мини-лоадер при обновлении статуса
+                                                <span className="flex items-center">
+                                                    <Loader size="sm" className="mr-1" />
+                                                    Updating...
+                                                </span>
+                                            ) : file.completed ? 'Completed' : 'Pending'}
+                                        </span>
+                                        <div className="card__arrow">
+                                            <label className="container_checkbox">
+                                                <input
+                                                    type="checkbox"
+                                                    checked={file.completed}
+                                                    onChange={(e) => handleStatusChange(file.id, e.target.checked)}
+                                                    disabled={updatingIds.has(file.id)}
+                                                />
+                                                <svg viewBox="0 0 64 64" height="2em" width="2em">
+                                                    <path
+                                                        d="M 0 16 V 56 A 8 8 90 0 0 8 64 H 56 A 8 8 90 0 0 64 56 V 8 A 8 8 90 0 0 56 0 H 8 A 8 8 90 0 0 0 8 V 16 L 32 48 L 64 16 V 8 A 8 8 90 0 0 56 0 H 8 A 8 8 90 0 0 0 8 V 56 A 8 8 90 0 0 8 64 H 56 A 8 8 90 0 0 64 56 V 16"
+                                                        className="path"
+                                                    ></path>
+                                                </svg>
+                                            </label>
+                                        </div>
                                     </div>
                                 </div>
-                                <div className="flex items-center space-x-2">
-                                    <span className={`text-xs px-2 py-1 rounded ${file.completed
-                                        ? 'bg-green-100 text-green-800'
-                                        : 'bg-yellow-100 text-yellow-800'
-                                        }`}>
-                                        {updatingIds.has(file.id) ? 'Updating...' : file.completed ? 'Completed' : 'Pending'}
-                                    </span>
-                                    <div className="card__arrow">
-                                        <label className="container_checkbox">
-                                            <input
-                                                type="checkbox"
-                                                checked={file.completed}
-                                                onChange={(e) => handleStatusChange(file.id, e.target.checked)}
-                                                disabled={updatingIds.has(file.id)}
-                                            />
-                                            <svg viewBox="0 0 64 64" height="2em" width="2em">
-                                                <path
-                                                    d="M 0 16 V 56 A 8 8 90 0 0 8 64 H 56 A 8 8 90 0 0 64 56 V 8 A 8 8 90 0 0 56 0 H 8 A 8 8 90 0 0 0 8 V 16 L 32 48 L 64 16 V 8 A 8 8 90 0 0 56 0 H 8 A 8 8 90 0 0 0 8 V 56 A 8 8 90 0 0 8 64 H 56 A 8 8 90 0 0 64 56 V 16"
-                                                    className="path"
-                                                ></path>
-                                            </svg>
-                                        </label>
-                                    </div>
+                                <div className="card__date">
+                                    {new Date(file.created_at).toLocaleString()}
                                 </div>
                             </div>
-                            <div className="card__date">
-                                {new Date(file.created_at).toLocaleString()}
-                            </div>
-                        </div>
-                    </li>
-                ))}
-            </ul>
-
+                        </li>
+                    ))}
+                </ul>
+            )}
         </div>
     );
 }

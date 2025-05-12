@@ -184,27 +184,78 @@ body {
 
 /* Files loading */
 
-.loader-box {
+/* Базовые стили лоадера */
+.loader-container {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 }
 
+/* Вариант с круговым спиннером (по умолчанию) */
 .loader-spinner {
-  display: inline-block;
-  width: 3rem;
-  height: 3rem;
-  border: 0.25rem solid rgba(59, 130, 246, 0.2);
-  /* голубой с прозрачностью */
+  border: 3px solid rgba(59, 130, 246, 0.2);
+  /* Прозрачная часть */
   border-radius: 50%;
-  border-top-color: #3b82f6;
-  /* голубой */
-  animation: spin 1s ease-in-out infinite;
+  border-top: 3px solid #3b82f6;
+  /* Цветная часть */
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
 }
 
+/* Размеры */
+.loader-spinner.small {
+  width: 24px;
+  height: 24px;
+  border-width: 2px;
+}
+
+.loader-spinner.medium {
+  width: 40px;
+  height: 40px;
+  border-width: 3px;
+}
+
+.loader-spinner.large {
+  width: 60px;
+  height: 60px;
+  border-width: 4px;
+}
+
+/* Цвета */
+.loader-spinner.blue {
+  border-top-color: #3b82f6;
+}
+
+.loader-spinner.white {
+  border-top-color: #ffffff;
+}
+
+.loader-spinner.emerald {
+  border-top-color: #10b981;
+}
+
+/* Анимация */
 @keyframes spin {
-  to {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
     transform: rotate(360deg);
   }
+}
+
+/* Полноэкранный вариант */
+.loader-fullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
 }
 
 
