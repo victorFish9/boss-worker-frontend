@@ -54,7 +54,7 @@ export default function LoginPage() {
             if (response.ok) {
                 console.log("Login was successful");
                 setCookie(null, "accessToken", data.token, {
-                    maxAge: 60 * 60 * 24,
+                    maxAge: 60 * 60,
                     path: "/",
                 })
                 router.push("/");
